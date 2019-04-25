@@ -1,0 +1,19 @@
+{
+  "name": "hospital_server",
+  "version": "1.0.0",
+  "description": "Server for the databases course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielferragut/MC536.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielferragut/MC536/issues"
+  },
+  "homepage": "https://github.com/danielferragut/MC536#readme"
+}
