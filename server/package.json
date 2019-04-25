@@ -4,7 +4,8 @@
   "description": "Server for the databases course",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_ENV=test mocha --exit --timeout 5000 __tests__/server/**/*.test.js",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/danielferragut/MC536/issues"
   },
-  "homepage": "https://github.com/danielferragut/MC536#readme"
+  "homepage": "https://github.com/danielferragut/MC536#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1"
+  }
 }
