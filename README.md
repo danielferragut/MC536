@@ -32,7 +32,7 @@ Change directories to the new *MC536* directory created, more specifically you w
 To run the server, you will need to install the *node_modules* that the server needs to run. To do that run the command:
 
 ```
-npm start
+npm install
 ```
 This should take some minutes to complete.
 
