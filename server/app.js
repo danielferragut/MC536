@@ -13,5 +13,5 @@ app.use(express.urlencoded({extended: true}));
 
 //Routes
 app.use("/index", require("./routes/index-route"));
-app.use("/user", require('./routes/user-route'))
+app.use("/paciente", require('./routes/paciente-route'))
 module.exports = app;
