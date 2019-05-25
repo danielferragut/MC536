@@ -27,9 +27,9 @@ First, clone this repository to your PC:
 git clone https://github.com/danielferragut/MC536.git
 ```
 
-Change directories to the new *MC536* directory created, more specifically you want to go to /MC536/server directory. 
+Change directories to the new *MC536* directory created, more specifically you want to go to */MC536/server* directory. 
 
-You can run the server now, but it will cause an error due to the lack of keys for the database, if you want the keys.js for the database hit me up with a message. If you want to test on your own database, you will need to edit the fields on the keysTemplate.js in the config directory, and them rename it to keys.js.
+You can run the server now, but it will cause an error due to the lack of keys for the database, if you want the keys.js for the database hit me up with a message. If you want to test on your own database, you will need to edit the fields on the keysTemplate.js in the config directory and rename it to keys.js.
 
 After dealing with the keys.js, you can finally run the server with the command:
 
