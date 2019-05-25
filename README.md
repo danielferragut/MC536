@@ -27,9 +27,16 @@ First, clone this repository to your PC:
 git clone https://github.com/danielferragut/MC536.git
 ```
 
-Change directories to the new *MC536* directory created, more specifically you want to go to */MC536/server* directory. 
+Change directories to the new *MC536* directory created, more specifically you want to go to */MC536/server* directory.
 
-You can run the server now, but it will cause an error due to the lack of keys for the database, if you want the keys.js for the database hit me up with a message. If you want to test on your own database, you will need to edit the fields on the keysTemplate.js in the config directory and rename it to keys.js.
+To run the server, you will need to install the *node_modules* that the server needs to run. To do that run the command:
+
+```
+npm start
+```
+This should take some minutes to complete.
+
+After the installation, you are able to run the server now, but it will cause an error due to the lack of keys for the database, if you want the keys.js for the database hit me up with a message. If you want to test on your own database, you will need to edit the fields on the keysTemplate.js in the config directory and rename it to keys.js.
 
 After dealing with the keys.js, you can finally run the server with the command:
 
@@ -74,3 +81,5 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Daniel Ferragut** - *Backend and documentation*
+* **The rest of the team** - *To be added in the future*
+
