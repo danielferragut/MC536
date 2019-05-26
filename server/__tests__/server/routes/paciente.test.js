@@ -100,7 +100,50 @@ describe('Paciente route', () => {
                 throw(error);
             }
         });
+
+        it('Should get all consultas with pacientes with MORE than 10 YEARS', async () => {
+            try {
+                req = {
+                    primary : 'data_de_nascimento',
+                    primaryValue : [10,null],
+                    secondary : ["consulta", "médico"]
+                };
+                const result = await chai
+                    .request(server)
+                    .get("/paciente/")
+                    .send(req);
+                expect(result.status).to.equal(200);
+                expect(result.body).to.have.property('records');
+                records = result.body.records;
+                expect(records).to.have.property('primary');
+                expect(records).to.have.property('secondary');
+                expect(records.primary).to.have.lengthOf.above(0);
+                expect(records.secondary).to.have.lengthOf.above(0);
+            } catch (error) {
+                throw(error);
+            }
+        });
+
+        it('SQL Injection attempt, should return 400', async () => {
+            try {
+                req = {
+                    primary : '; DROP TABLE paciente;',
+                    primaryValue : '; DROP TABLE paciente;',
+                    secondary : ["consulta", "médico"]
+                };
+                const result = await chai
+                    .request(server)
+                    .get("/paciente/")
+                    .send(req);
+                expect(result.status).to.equal(400);
+            } catch (error) {
+                throw(error);
+            }
+        });
+
+        
     });
+    
 
     describe('Get paciente with primary key', () => {
         it('Should get one paciente by its primary key', async () => {

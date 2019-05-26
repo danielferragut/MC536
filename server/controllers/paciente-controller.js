@@ -90,7 +90,13 @@ module.exports = {
             }
             res.status(200).json(prettyResponse(primaryQueryResult.rows, secondQueryResult));
         }catch(err){
-            throw err
+            if (err.errorMesssage = "SQL INJECTION ATTEMPT!"){
+                res.sendStatus(400);
+            }
+            else{
+                res.sendStatus(500);
+            }
+            console.log(err);
         }
     },
 
@@ -100,6 +106,7 @@ module.exports = {
             queryResult =  await dynamicQuery.getByPrimaryKey('paciente', cpf);
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
+            res.sendStatus(500);
             throw err
         }
     },
@@ -111,6 +118,7 @@ module.exports = {
             queryString = 'INSERT INTO paciente VALUES ($1,$2,$3,$4)';
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
+            res.sendStatus(500);
             throw err
         }
     },
@@ -119,6 +127,7 @@ module.exports = {
             values = req.body.values
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
+            res.sendStatus(500);
             throw err
         }
     }
