@@ -2,6 +2,8 @@
 
 Repository for the "Database" course, a webpage that helps hospitals manage their information in relation to patients, doctors, exams, etc... 
 
+Documentation can be found at [here](https://documenter.getpostman.com/view/6594656/S1TR5L3z?version=latest)
+
 Made with Angular, Node.js with Express and PostgreSQL.
 
 <!-- ## Getting Started
