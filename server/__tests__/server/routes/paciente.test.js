@@ -30,6 +30,52 @@ describe('Paciente route', () => {
                 throw(error);
             }
         });
+        it('Should get all MALE pacientes', async () => {
+            try {
+                req = {
+                    primary : 'sexo',
+                    primaryValue : 'M'
+                };
+                const result = await chai
+                    .request(server)
+                    .get("/paciente/")
+                    .send(req);
+                expect(result.status).to.equal(200);
+            } catch (error) {
+                throw(error);
+            }
+        });
+        // it('Should get all pacientes with less than 30 years', async () => {
+        //     try {
+        //         req = {
+        //             primary : 'data_de_nascimento',
+        //             primaryValue : [20, 30]
+        //         };
+        //         const result = await chai
+        //             .request(server)
+        //             .get("/paciente/")
+        //             .send(req);
+        //         expect(result.status).to.equal(200);
+        //     } catch (error) {
+        //         throw(error);
+        //     }
+        // });
+        it('Should get all consultas with MALE pacientes', async () => {
+            try {
+                req = {
+                    primary : 'sexo',
+                    primaryValue : 'M',
+                    secondary : ["consulta", "médico"]
+                };
+                const result = await chai
+                    .request(server)
+                    .get("/paciente/")
+                    .send(req);
+                expect(result.status).to.equal(200);
+            } catch (error) {
+                throw(error);
+            }
+        });
     });
 
     describe('Get paciente with primary key', () => {
@@ -38,7 +84,6 @@ describe('Paciente route', () => {
                 const result = await chai
                     .request(server)
                     .get("/paciente/3")
-                console.log(result.body.records);
                 expect(result.status).to.equal(200);
             } catch (error) {
                 throw(error);
