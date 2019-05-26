@@ -10,9 +10,6 @@ const server = require('../../../app');
 
 chai.use(chaiHttp);
 
-let token;
-let validId;
-let validId2;
 
 describe('Index route', () => {
 

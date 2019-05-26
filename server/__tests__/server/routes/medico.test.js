@@ -10,7 +10,7 @@ const server = require('../../../app');
 
 chai.use(chaiHttp);
 
-describe('Paciente route', () => {
+describe('Médico route', () => {
 
     // before(async () => {
     // });
@@ -19,12 +19,12 @@ describe('Paciente route', () => {
     // after('Cleaning database', async () => {
     // });
 
-    describe('Get all pacientes', () => {
-        it('Should get all pacientes and return 200 OK', async () => {
+    describe('Get all médicos', () => {
+        it('Should get all medicos and return 200 OK', async () => {
             try {
                 const result = await chai
                     .request(server)
-                    .get("/paciente/")
+                    .get("/medico/")
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
@@ -36,28 +36,28 @@ describe('Paciente route', () => {
                 throw(error);
             }
         });
-        // it('Should get all MALE pacientes', async () => {
-        //     try {
-        //         req = {
-        //             primary : 'sexo',
-        //             primaryValue : 'M'
-        //         };
-        //         const result = await chai
-        //             .request(server)
-        //             .get("/paciente/")
-        //             .send(req);
-        //         expect(result.status).to.equal(200);
-        //         expect(result.body).to.have.property('records');
-        //         records = result.body.records;
-        //         expect(records).to.have.property('primary');
-        //         expect(records).to.have.property('secondary');
-        //         expect(records.primary).to.have.lengthOf.above(0);
-        //         expect(records.secondary).to.have.lengthOf(0);
-        //     } catch (error) {
-        //         throw(error);
-        //     }
-        // });
-        it('Should get all pacientes with less than 30 years', async () => {
+        it('Should get all medicos named Medico2', async () => {
+            try {
+                req = {
+                    primary : 'nome',
+                    primaryValue : 'Medico2'
+                };
+                const result = await chai
+                    .request(server)
+                    .get("/medico/")
+                    .send(req);
+                expect(result.status).to.equal(200);
+                expect(result.body).to.have.property('records');
+                records = result.body.records;
+                expect(records).to.have.property('primary');
+                expect(records).to.have.property('secondary');
+                expect(records.primary).to.have.lengthOf.above(0);
+                expect(records.secondary).to.have.lengthOf(0);
+            } catch (error) {
+                throw(error);
+            }
+        });
+        it('Should get all medicos with less than 30 years', async () => {
             try {
                 req = {
                     primary : 'data_de_nascimento',
@@ -65,7 +65,7 @@ describe('Paciente route', () => {
                 };
                 const result = await chai
                     .request(server)
-                    .get("/paciente/")
+                    .get("/medico/")
                     .send(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
@@ -78,39 +78,17 @@ describe('Paciente route', () => {
                 throw(error);
             }
         });
-        it('Should get all consultas with MALE pacientes', async () => {
-            try {
-                req = {
-                    primary : 'sexo',
-                    primaryValue : 'M',
-                    secondary : ["consulta", "médico"]
-                };
-                const result = await chai
-                    .request(server)
-                    .get("/paciente/")
-                    .send(req);
-                expect(result.status).to.equal(200);
-                expect(result.body).to.have.property('records');
-                records = result.body.records;
-                expect(records).to.have.property('primary');
-                expect(records).to.have.property('secondary');
-                expect(records.primary).to.have.lengthOf.above(0);
-                expect(records.secondary).to.have.lengthOf.above(0);
-            } catch (error) {
-                throw(error);
-            }
-        });
 
-        it('Should get all consultas with pacientes with MORE than 10 YEARS', async () => {
+        it('Should get all consultas with medicos with MORE than 10 YEARS', async () => {
             try {
                 req = {
                     primary : 'data_de_nascimento',
                     primaryValue : [10,null],
-                    secondary : ["consulta", "médico"]
+                    secondary : ["médico"]
                 };
                 const result = await chai
                     .request(server)
-                    .get("/paciente/")
+                    .get("/medico/")
                     .send(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
@@ -127,13 +105,13 @@ describe('Paciente route', () => {
         it('SQL Injection attempt, should return 400', async () => {
             try {
                 req = {
-                    primary : '; DROP TABLE paciente;',
-                    primaryValue : '; DROP TABLE paciente;',
+                    primary : '; DROP TABLE medico;',
+                    primaryValue : '; DROP TABLE medico;',
                     secondary : ["consulta", "médico"]
                 };
                 const result = await chai
                     .request(server)
-                    .get("/paciente/")
+                    .get("/medico/")
                     .send(req);
                 expect(result.status).to.equal(400);
             } catch (error) {
@@ -145,12 +123,12 @@ describe('Paciente route', () => {
     });
     
 
-    describe('Get paciente with primary key', () => {
-        it('Should get one paciente by its primary key', async () => {
+    describe('Get medico with primary key', () => {
+        it('Should get one medico by its primary key', async () => {
             try {
                 const result = await chai
                     .request(server)
-                    .get("/paciente/3")
+                    .get("/medico/21")
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
