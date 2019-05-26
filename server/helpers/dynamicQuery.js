@@ -31,7 +31,6 @@ module.exports = {
             }
             values = [primaryKeyValue];
             queryString = 'SELECT * FROM ' + table + ' WHERE ' + primaryKey + ' = $1'
-            console.log(queryString);
             result = await database.query(queryString, values);
             return result;
         }catch(err){

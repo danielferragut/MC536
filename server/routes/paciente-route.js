@@ -3,10 +3,10 @@ const pacienteController = require('../controllers/paciente-controller');
 router = express.Router();
 
 router.route('/')
-    .get(pacienteController.getAllPacientes);
+    .get(pacienteController.getPacientes);
 
 router.route('/:cpf')
-    .get(pacienteController.getPaciente);
+    .get(pacienteController.getPacientePrimary);
     // .post(pacienteController.postPaciente);
 
 module.exports = router;

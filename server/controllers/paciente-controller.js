@@ -5,7 +5,7 @@ const injectionCheck = require('../helpers/injectionCheck').checkTableInjection;
 
 
 module.exports = {
-    getAllPacientes : async (req, res, next) => {
+    getPacientes : async (req, res, next) => {
         try{
             primary = req.body.primary;
             primaryValue = req.body.primaryValue;
@@ -15,7 +15,7 @@ module.exports = {
             secondQueryResult = [];
             queryString = "";
 
-
+            //Secondary lenght has the lenght of the secondary Array/Object
             if (secondary != undefined){
                 secondaryLenght = Object.keys(secondary).length;
             }
@@ -23,15 +23,19 @@ module.exports = {
                 secondaryLenght = 0;
             }
 
+            // If the search is a get all paciente
             if (primary == undefined){
                 queryString = 'SELECT * FROM paciente';
             }
 
+            // If the search is more complex
             else{
-                // Case Y=X
+                // Case Columns Y= Value X
+                // Text columns get generic treatment
                 if (primary !== 'data_de_nascimento'){
                     queryString = `SELECT * FROM get_paciente_text('${primary}', '${primaryValue}');`;
                 }
+                // Date columns get special treatment (Age query)
                 else{
                     beforeDate = primaryValue[0];
                     afterDate = primaryValue[1];
@@ -49,14 +53,18 @@ module.exports = {
                 }
             }
 
-            console.log(queryString);
+            // This request always returns a primary result
             primaryQueryResult = await database.query(queryString, values);
 
-            // Caso seja uma busca relacional
+            // In case of a relation search with Y and X.
             if (secondaryLenght != 0){
                 secondQueryResult = [];
+
+                //For every table in my relational tables array
                 for (let i = 0; i< secondaryLenght; i++){
                     table = secondary[i]
+
+                    //Checks for SQL Injection on table variable, throws error if there is one
                     injectionCheck(table);
 
                     if (primary !== 'data_de_nascimento'){
@@ -72,7 +80,6 @@ module.exports = {
                         WHERE (idade >= $1 AND idade <= $2) AND (entidade.cpf = p.cpf);
                         `
                     }
-                    console.log(secondQueryString);
                     tempQueryResult = await database.query(secondQueryString, values);
                     result = {
                         tableName: table,
@@ -83,30 +90,35 @@ module.exports = {
             }
             res.status(200).json(prettyResponse(primaryQueryResult.rows, secondQueryResult));
         }catch(err){
-            console.log(err);
             throw err
         }
     },
 
-    getPaciente : async (req, res, next) => {
+    getPacientePrimary : async (req, res, next) => {
         try{
             let cpf = req.params.cpf
             queryResult =  await dynamicQuery.getByPrimaryKey('paciente', cpf);
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
-            console.log(err);
             throw err
         }
     },
 
+    //TODO : When there is real data
     createPaciente : async (req, res, next) => {
-        //TODO When there is real data
         try{
             values = req.body.values
             queryString = 'INSERT INTO paciente VALUES ($1,$2,$3,$4)';
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
-            console.log(err);
+            throw err
+        }
+    },
+    putPaciente : async (req, res, next) => {
+        try{
+            values = req.body.values
+            res.status(200).json(prettyResponse(queryResult.rows));
+        }catch(err){
             throw err
         }
     }
