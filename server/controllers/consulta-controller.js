@@ -27,80 +27,98 @@ module.exports = {
                 secondaryLenght = 0;
             }
 
-            // // If the search is a get all consulta
-            // if (primary == undefined){
-            //     queryString = 'SELECT * FROM consulta';
-            // }
+            // If the search is a get all consulta
+            if (primary == undefined){
+                queryString = 'SELECT * FROM consulta';
+            }
 
-            // // If the search is more complex
-            // else{
-            //     // Case Columns Y= Value X
-            //     // Text columns get generic treatment
-            //     if (primary !== 'data_de_nascimento'){
-            //         queryString = `SELECT * FROM get_consulta_text('${primary}', '${primaryValue}');`;
-            //     }
-            //     // Date columns get special treatment (Age query)
-            //     else{
-            //         beforeDate = primaryValue[0];
-            //         afterDate = primaryValue[1];
-            //         if (beforeDate === null){
-            //             beforeDate = 0;
-            //         }
-            //         if (afterDate === null){
-            //             afterDate = 999;
-            //         }
-            //         values = [beforeDate, afterDate];
-            //         queryString = "SELECT m.* FROM consulta as m, \
-            //         EXTRACT(YEAR from age((now()::date), m.data_de_nascimento)) as idade \
-            //         WHERE idade >= $1 AND idade <= $2; \
-            //         "
-            //     }
-            // }
+            // CREATE TABLE consulta(
+            //     PRIMARY KEY(crm, cpf, data_da_consulta)
+            // );
+
+            // If the search is more complex
+            else{
+                // Case Columns Y= Value X
+                // Text columns get generic treatment
+                if (primary !== 'data_da_consulta' && primary !== 'hora'){
+                    queryString = `SELECT * FROM get_consulta_text('${primary}', '${primaryValue}');`;
+                }
+                // Date columns get special treatment
+                else{
+                    if (primary === 'data_da_consulta'){
+                        beforeDate = req.query.beforeDate;
+                        afterDate = req.query.afterDate;
+                        if (afterDate === undefined){
+                            afterDate = '01/01/1500';
+                        }
+                        if (beforeDate === undefined){
+                            beforeDate =  '01/01/3000';
+                        }
+                        values = [afterDate, beforeDate];
+                        queryString = "SELECT * FROM consulta \
+                        WHERE data_da_consulta >= $1 AND data_da_consulta <= $2;"
+                    }
+
+                    else if (primary === 'hora'){
+                        beforeTime = req.query.beforeTime;
+                        afterTime = req.query.afterTime;
+                        if (beforeTime === undefined){
+                            beforeTime = '23:59';
+                        }
+                        if (afterTime === undefined){
+                            afterTime =  '00:00';
+                        }
+                        values = [afterTime, beforeTime];
+                        queryString = "SELECT * FROM consulta \
+                        WHERE hora >= $1 AND hora <= $2;"
+                    }
+                }
+            }
 
             // // This request always returns a primary result
-            // primaryQueryResult = await database.query(queryString, values);
+            primaryQueryResult = await database.query(queryString, values);
 
-            // // In case of a relation search with Y and X.
-            // if (secondaryLenght != 0){
-            //     secondQueryResult = [];
+            // In case of a relation search with Y and X.
+            if (secondaryLenght != 0){
+                secondQueryResult = [];
 
-            //     //For every table in my relational tables array
-            //     for (let i = 0; i< secondaryLenght; i++){
-            //         table = secondary[i]
+                //For every table in my relational tables array
+                for (let i = 0; i< secondaryLenght; i++){
+                    table = secondary[i]
 
-            //         //Checks for SQL Injection on table variable, throws error if there is one
-            //         checkTableInjection(table);
+                    //Checks for SQL Injection on table variable, throws error if there is one
+                    checkTableInjection(table);
 
-            //         if (primary !== 'data_de_nascimento'){
-            //             secondQueryString = `SELECT entidade.* 
-            //             FROM get_consulta_text('${primary}', '${primaryValue}') as m, 
-            //             ${table} as entidade 
-            //             WHERE m.crm = entidade.crm;`;
-            //         }
-            //         else{
-            //             secondQueryString = `SELECT entidade.* 
-            //             FROM consulta as m, ${table} as entidade,
-            //             EXTRACT(YEAR from age((now()::date), m.data_de_nascimento)) as idade
-            //             WHERE (idade >= $1 AND idade <= $2) AND (entidade.crm = m.crm);
-            //             `
-            //         }
-            //         tempQueryResult = await database.query(secondQueryString, values);
-            //         result = {
-            //             tableName: table,
-            //             rows : tempQueryResult.rows
-            //         }
-            //         secondQueryResult.push(result);
-            //     }
-            // }
-            res.sendStatus(200);
-            // res.status(200).json(prettyResponse(primaryQueryResult.rows, secondQueryResult));
+                    if (primary !== 'data_de_nascimento'){
+                        secondQueryString = `SELECT entidade.* 
+                        FROM get_consulta_text('${primary}', '${primaryValue}') as m, 
+                        ${table} as entidade 
+                        WHERE m.crm = entidade.crm;`;
+                    }
+                    else{
+                        secondQueryString = `SELECT entidade.* 
+                        FROM consulta as m, ${table} as entidade,
+                        EXTRACT(YEAR from age((now()::date), m.data_de_nascimento)) as idade
+                        WHERE (idade >= $1 AND idade <= $2) AND (entidade.crm = m.crm);
+                        `
+                    }
+                    tempQueryResult = await database.query(secondQueryString, values);
+                    result = {
+                        tableName: table,
+                        rows : tempQueryResult.rows
+                    }
+                    secondQueryResult.push(result);
+                }
+            }
+            res.status(200).json(prettyResponse(primaryQueryResult.rows, secondQueryResult));
         }catch(err){
-            if (err.errorMesssage = "SQL INJECTION ATTEMPT!"){
+            if (err.errorMesssage === "SQL INJECTION ATTEMPT!"){
                 res.sendStatus(400);
             }
             else{
                 res.sendStatus(500);
             }
+            throw(err);
         }
     },
 

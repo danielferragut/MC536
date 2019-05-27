@@ -1,5 +1,7 @@
 // will work for linux for windows we are going to user cross-env in package json
 //process.env.NODE_ENV = 'test';
+require('./index.test');
+require('./paciente.test');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');

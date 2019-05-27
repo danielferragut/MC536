@@ -59,7 +59,7 @@ module.exports = {
             }
             // This request always returns a primary result
             primaryQueryResult = await database.query(queryString, values);
-            console.log(queryString, primaryQueryResult.rows);
+            
             // In case of a relation search with Y and X.
             if (secondaryLenght != 0){
                 secondQueryResult = [];
