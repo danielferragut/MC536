@@ -26,8 +26,9 @@ module.exports = {
                     primaryKey = 'protocolo_internacao';
                     break;
                 default:
-                    //TODO : Maybe throw a error?
-                    return null;
+                    throw err ={
+                        errorMessage : "SQL INJECTION ATTEMPT!"
+                    }
             }
             values = [primaryKeyValue];
             queryString = 'SELECT * FROM ' + table + ' WHERE ' + primaryKey + ' = $1'

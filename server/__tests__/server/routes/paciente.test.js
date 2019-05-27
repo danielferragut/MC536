@@ -45,7 +45,7 @@ describe('Paciente route', () => {
         //         const result = await chai
         //             .request(server)
         //             .get("/paciente/")
-        //             .send(req);
+        //             .query(req);
         //         expect(result.status).to.equal(200);
         //         expect(result.body).to.have.property('records');
         //         records = result.body.records;
@@ -61,12 +61,13 @@ describe('Paciente route', () => {
             try {
                 req = {
                     primary : 'data_de_nascimento',
-                    primaryValue : [20, 30]
+                    minAge : 20,
+                    maxAge : 30
                 };
                 const result = await chai
                     .request(server)
                     .get("/paciente/")
-                    .send(req);
+                    .query(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
@@ -88,7 +89,7 @@ describe('Paciente route', () => {
                 const result = await chai
                     .request(server)
                     .get("/paciente/")
-                    .send(req);
+                    .query(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
@@ -111,7 +112,7 @@ describe('Paciente route', () => {
                 const result = await chai
                     .request(server)
                     .get("/paciente/")
-                    .send(req);
+                    .query(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
@@ -134,7 +135,7 @@ describe('Paciente route', () => {
                 const result = await chai
                     .request(server)
                     .get("/paciente/")
-                    .send(req);
+                    .query(req);
                 expect(result.status).to.equal(400);
             } catch (error) {
                 throw(error);

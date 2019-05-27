@@ -10,11 +10,15 @@ const app = express(); //app is the server
 if (process.env.NODE_ENV != "test"){
     app.use(morgan("dev"));
 }
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //Routes
-app.use("/index", require("./routes/index-route"));;
+app.use("/", require("./routes/index-route"));;
+app.use("/index", require("./routes/index-route"));
 app.use("/paciente", require('./routes/paciente-route'));
 app.use("/medico", require('./routes/medico-route'));
+app.use("/consulta", require('./routes/consulta-route'));
+
+
 module.exports = app;

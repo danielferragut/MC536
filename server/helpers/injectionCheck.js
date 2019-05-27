@@ -1,5 +1,6 @@
 module.exports = {
     checkTableInjection : (table) => {
+        console.log(table);
         switch(table){
             case 'paciente':
                 primaryKey = 'cpf';
@@ -21,9 +22,10 @@ module.exports = {
                 break; 
             case 'internação':
                 primaryKey = 'protocolo_internacao';
-                break;
+                break;                
             default:
                 //TODO : Maybe throw a error?
+                console.log("To aqui!");
                 throw err = {
                     errorMessage : "SQL INJECTION ATTEMPT!"
                 }

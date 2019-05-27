@@ -45,7 +45,7 @@ describe('Médico route', () => {
                 const result = await chai
                     .request(server)
                     .get("/medico/")
-                    .send(req);
+                    .query(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
@@ -61,12 +61,13 @@ describe('Médico route', () => {
             try {
                 req = {
                     primary : 'data_de_nascimento',
-                    primaryValue : [20, 30]
+                    minAge: 20,
+                    maxAge: 30
                 };
                 const result = await chai
                     .request(server)
                     .get("/medico/")
-                    .send(req);
+                    .query(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
@@ -79,17 +80,17 @@ describe('Médico route', () => {
             }
         });
 
-        it('Should get all consultas with medicos with MORE than 10 YEARS', async () => {
+        it('(Relational Search)Should get all consultas with medicos with MORE than 10 YEARS', async () => {
             try {
                 req = {
                     primary : 'data_de_nascimento',
-                    primaryValue : [10,null],
-                    secondary : ["médico"]
+                    minAge : 10,
+                    secondary : ["consulta"]
                 };
                 const result = await chai
                     .request(server)
                     .get("/medico/")
-                    .send(req);
+                    .query(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
@@ -112,8 +113,8 @@ describe('Médico route', () => {
                 const result = await chai
                     .request(server)
                     .get("/medico/")
-                    .send(req);
-                expect(result.status).to.equal(400);
+                    .query(req);
+                expect(result.status).to.equal(500);
             } catch (error) {
                 throw(error);
             }

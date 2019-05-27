@@ -7,21 +7,26 @@ const checkTableInjection = require('../helpers/injectionCheck').checkTableInjec
 module.exports = {
     getMedicos : async (req, res, next) => {
         try{
-            primary = req.body.primary;
-            primaryValue = req.body.primaryValue;
-            secondary = req.body.secondary;
+            primary = req.query.primary;
+            primaryValue = req.query.primaryValue;
+            secondary = req.query.secondary;
             values = [];
             primaryQueryResult = [];
             secondQueryResult = [];
             queryString = "";
-
             //Secondary lenght has the lenght of the secondary Array/Object
             if (secondary != undefined){
-                secondaryLenght = Object.keys(secondary).length;
+                if (! Array.isArray(secondary)){
+                    secondary = [secondary];
+                }
+                secondaryLenght = secondary.length;
+
             }
             else{
+                secondary = []
                 secondaryLenght = 0;
             }
+
 
             // If the search is a get all medico
             if (primary == undefined){
@@ -37,12 +42,12 @@ module.exports = {
                 }
                 // Date columns get special treatment (Age query)
                 else{
-                    beforeDate = primaryValue[0];
-                    afterDate = primaryValue[1];
-                    if (beforeDate === null){
+                    beforeDate = req.query.minAge
+                    afterDate = req.query.maxAge
+                    if (beforeDate === undefined){
                         beforeDate = 0;
                     }
-                    if (afterDate === null){
+                    if (afterDate === undefined){
                         afterDate = 999;
                     }
                     values = [beforeDate, afterDate];
@@ -52,14 +57,12 @@ module.exports = {
                     "
                 }
             }
-
             // This request always returns a primary result
             primaryQueryResult = await database.query(queryString, values);
-
+            console.log(queryString, primaryQueryResult.rows);
             // In case of a relation search with Y and X.
             if (secondaryLenght != 0){
                 secondQueryResult = [];
-
                 //For every table in my relational tables array
                 for (let i = 0; i< secondaryLenght; i++){
                     table = secondary[i]
@@ -90,12 +93,8 @@ module.exports = {
             }
             res.status(200).json(prettyResponse(primaryQueryResult.rows, secondQueryResult));
         }catch(err){
-            if (err.errorMesssage = "SQL INJECTION ATTEMPT!"){
-                res.sendStatus(400);
-            }
-            else{
-                res.sendStatus(500);
-            }
+            res.sendStatus(500);
+            // throw(err)
         }
     },
 
@@ -114,7 +113,7 @@ module.exports = {
     createMedicos : async (req, res, next) => {
         try{
             values = req.body.values
-            queryString = 'INSERT INTO médico VALUES ($1,$2,$3,$4)';
+            queryString = 'INSERT INTO médico VALUES ($1,$2,$3,$4)';n
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
             res.sendStatus(500);
