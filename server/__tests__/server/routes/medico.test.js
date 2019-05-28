@@ -38,11 +38,11 @@ describe('medico route', () => {
                 throw(error);
             }
         });
-        it('Should get all medicos named Medico2', async () => {
+        it('Should get all medicos with especialização "Cardiologista"', async () => {
             try {
                 req = {
-                    primary : 'nome',
-                    primaryValue : 'Medico2'
+                    primary : 'especialização',
+                    primaryValue : "Cardiologista"
                 };
                 const result = await chai
                     .request(server)

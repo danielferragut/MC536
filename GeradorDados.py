@@ -138,7 +138,7 @@ for x in range(1, qtdeCirurgias + 1):
 arq.write('\n')
 
 exames = ['sangue', 'urina', 'fezes', 'espermograma', 'escarro', 'liquido cefalorraquidiano', 'liquido pleural']
-origensExame = ['consulta', 'internação', 'atendimento']
+origensExame = ['consulta', 'internacao', 'atendimento']
 # Exames
 for x in range(1, qtdeExames + 1):
     
@@ -153,11 +153,11 @@ for x in range(1, qtdeExames + 1):
         protocolo_atendimento = 'null'
         values = 'INSERT INTO exame(protocolo_exame,data_do_exame,hora_do_exame,tipo,cpf,crm,data_da_consulta) VALUES (' + protocolo_exame + ', ' + '\'' + data_exame + '\'' + ', ' + '\'' + horario + '\'' + ', ' + '\'' + tipo + '\'' + ', ' + cpf + ', ' + crm + ', ' + '\'' + hora + '\');\n'
 
-    elif origemDoExame == 'internação':
+    elif origemDoExame == 'internacao':
         cpf, crm, hora = 'null','null', 'null'
         protocolo_internacao = random.choice(internacoesValidas)
         protocolo_atendimento = None
-        values = 'INSERT INTO exame(protocolo_exame,data_do_exame,hora_do_exame,tipo,protocolo_internação) VALUES (' + protocolo_exame + ', ' + '\'' + data_exame + '\'' + ', ' + '\'' + horario + '\'' + ', ' + '\'' + tipo + '\'' + ', ' + protocolo_internacao + ');\n'
+        values = 'INSERT INTO exame(protocolo_exame,data_do_exame,hora_do_exame,tipo,protocolo_internacao) VALUES (' + protocolo_exame + ', ' + '\'' + data_exame + '\'' + ', ' + '\'' + horario + '\'' + ', ' + '\'' + tipo + '\'' + ', ' + protocolo_internacao + ');\n'
 
     else:
         cpf, crm, hora = 'null','null', 'null'

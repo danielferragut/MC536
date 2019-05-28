@@ -3,10 +3,10 @@ const medicoController = require('../controllers/medico-controller');
 router = express.Router();
 
 router.route('/')
-    .get(medicoController.getMedicos);
+    .get(medicoController.getMedicos)
+    .post(medicoController.createMedico);
 
 router.route('/:crm')
     .get(medicoController.getMedicoPrimary);
-    // .post(medicoController.postmedico);
 
 module.exports = router;

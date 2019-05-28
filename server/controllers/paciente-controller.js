@@ -10,6 +10,7 @@ module.exports = {
             primary = req.query.primary;
             primaryValue = req.query.primaryValue;
             secondary = req.query.secondary;
+
             values = [];
             primaryQueryResult = [];
             secondQueryResult = [];
@@ -97,7 +98,6 @@ module.exports = {
             else{
                 res.sendStatus(500);
             }
-            // console.log(err);
         }
     },
 
@@ -112,11 +112,19 @@ module.exports = {
         }
     },
 
-    //TODO : When there is real data
     createPaciente : async (req, res, next) => {
         try{
-            values = req.body.values
-            queryString = 'INSERT INTO paciente VALUES ($1,$2,$3,$4)';
+            bodyObject = req.body
+            values = Object.values(bodyObject);
+            if (values.length == 6){
+                values.push(null)
+                values.push(null)
+            }
+            else if (values.length == 7){
+                values.push(null)
+            }
+            queryString = 'INSERT INTO paciente VALUES ($1,$2,$3,$4,$5,$6,$7,$8)';
+            queryResult = database.query(queryString, values);
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
             res.sendStatus(500);
@@ -125,7 +133,7 @@ module.exports = {
     },
     putPaciente : async (req, res, next) => {
         try{
-            values = req.body.values
+            values = req.body
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
             res.sendStatus(500);

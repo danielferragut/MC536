@@ -109,17 +109,19 @@ module.exports = {
         }
     },
 
-    //TODO : When there is real data
-    createMedicos : async (req, res, next) => {
+    createMedico : async (req, res, next) => {
         try{
-            values = req.body.values
-            queryString = 'INSERT INTO medico VALUES ($1,$2,$3,$4)';n
+            bodyObject = req.body
+            values = Object.values(bodyObject);
+            queryString = 'INSERT INTO medico VALUES ($1,$2,$3,$4,$5)';
+            queryResult = database.query(queryString, values);
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
             res.sendStatus(500);
             throw err
         }
     },
+
     putMedicos : async (req, res, next) => {
         try{
             values = req.body.values

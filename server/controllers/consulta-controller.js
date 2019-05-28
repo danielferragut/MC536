@@ -71,7 +71,6 @@ module.exports = {
                         values = [afterTime, beforeTime];
                         queryString = "SELECT * FROM consulta \
                         WHERE hora_da_consulta >= $1 AND hora_da_consulta <= $2;"
-                        console.log(queryString, values);
                     }
                 }
             }
@@ -143,17 +142,19 @@ module.exports = {
         }
     },
 
-    //TODO : When there is real data
-    createconsultas : async (req, res, next) => {
+    createConsulta : async (req, res, next) => {
         try{
-            values = req.body.values
-            queryString = 'INSERT INTO consulta VALUES ($1,$2,$3,$4)';
+            bodyObject = req.body
+            values = Object.values(bodyObject);
+            queryString = 'INSERT INTO consulta VALUES ($1,$2,$3,$4,$5,$6)';
+            queryResult = database.query(queryString, values);
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
             res.sendStatus(500);
             throw err
         }
     },
+    
     putconsultas : async (req, res, next) => {
         try{
             values = req.body.values
