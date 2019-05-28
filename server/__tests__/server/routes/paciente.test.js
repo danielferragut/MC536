@@ -85,7 +85,7 @@ describe('Paciente route', () => {
                 req = {
                     primary : 'sexo',
                     primaryValue : 'M',
-                    secondary : ["consulta", "médico"]
+                    secondary : ["consulta", "medico"]
                 };
                 const result = await chai
                     .request(server)
@@ -108,7 +108,7 @@ describe('Paciente route', () => {
                 req = {
                     primary : 'data_de_nascimento',
                     primaryValue : [10,null],
-                    secondary : ["consulta", "médico"]
+                    secondary : ["consulta", "medico"]
                 };
                 const result = await chai
                     .request(server)
@@ -131,7 +131,7 @@ describe('Paciente route', () => {
                 req = {
                     primary : '; DROP TABLE paciente;',
                     primaryValue : '; DROP TABLE paciente;',
-                    secondary : ["consulta", "médico"]
+                    secondary : ["consulta", "medico"]
                 };
                 const result = await chai
                     .request(server)

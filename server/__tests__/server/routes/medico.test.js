@@ -12,7 +12,7 @@ const server = require('../../../app');
 
 chai.use(chaiHttp);
 
-describe('Médico route', () => {
+describe('medico route', () => {
 
     // before(async () => {
     // });
@@ -110,7 +110,7 @@ describe('Médico route', () => {
                 req = {
                     primary : '; DROP TABLE medico;',
                     primaryValue : '; DROP TABLE medico;',
-                    secondary : ["consulta", "médico"]
+                    secondary : ["consulta", "medico"]
                 };
                 const result = await chai
                     .request(server)

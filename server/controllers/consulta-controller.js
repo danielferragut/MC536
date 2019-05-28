@@ -40,7 +40,7 @@ module.exports = {
             else{
                 // Case Columns Y= Value X
                 // Text columns get generic treatment
-                if (primary !== 'data_da_consulta' && primary !== 'hora'){
+                if (primary !== 'data_da_consulta' && primary !== 'hora_da_consulta'){
                     queryString = `SELECT * FROM get_consulta_text('${primary}', '${primaryValue}');`;
                 }
                 // Date columns get special treatment
@@ -59,7 +59,7 @@ module.exports = {
                         WHERE data_da_consulta >= $1 AND data_da_consulta <= $2;"
                     }
 
-                    else if (primary === 'hora'){
+                    else if (primary === 'hora_da_consulta'){
                         beforeTime = req.query.beforeTime;
                         afterTime = req.query.afterTime;
                         if (beforeTime === undefined){
@@ -70,7 +70,8 @@ module.exports = {
                         }
                         values = [afterTime, beforeTime];
                         queryString = "SELECT * FROM consulta \
-                        WHERE hora >= $1 AND hora <= $2;"
+                        WHERE hora_da_consulta >= $1 AND hora_da_consulta <= $2;"
+                        console.log(queryString, values);
                     }
                 }
             }
@@ -89,18 +90,27 @@ module.exports = {
                     //Checks for SQL Injection on table variable, throws error if there is one
                     checkTableInjection(table);
 
-                    if (primary !== 'data_de_nascimento'){
-                        secondQueryString = `SELECT entidade.* 
-                        FROM get_consulta_text('${primary}', '${primaryValue}') as m, 
-                        ${table} as entidade 
-                        WHERE m.crm = entidade.crm;`;
+                    if (primary !== 'data_da_consulta' && primary !== 'hora_da_consulta'){
+                        if (table == "medico"){
+                            secondQueryString = `SELECT entidade.* 
+                            FROM get_consulta_text('${primary}', '${primaryValue}') as m, 
+                            ${table} as entidade 
+                            WHERE m.crm = entidade.crm;`;
+                        }else{
+                            secondQueryString = `SELECT ${table}.* 
+                            FROM get_consulta_text('${primary}', '${primaryValue}') NATURAL JOIN ${table};`;
+                        }
                     }
                     else{
-                        secondQueryString = `SELECT entidade.* 
-                        FROM consulta as m, ${table} as entidade,
-                        EXTRACT(YEAR from age((now()::date), m.data_de_nascimento)) as idade
-                        WHERE (idade >= $1 AND idade <= $2) AND (entidade.crm = m.crm);
-                        `
+                        if (primary === 'data_da_consulta' || primary === 'hora_da_consulta'){
+                            secondQueryString = ` SELECT ${table}.* FROM consulta NATURAL JOIN ${table} 
+                            WHERE ${primary} >= $1 AND ${primary} <= $2;`
+                        }
+                        else{
+                            throw err ={
+                                errorMesssage : 'SQL INJECTION ATTEMPT!'
+                            }
+                        }
                     }
                     tempQueryResult = await database.query(secondQueryString, values);
                     result = {

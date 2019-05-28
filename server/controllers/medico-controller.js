@@ -30,7 +30,7 @@ module.exports = {
 
             // If the search is a get all medico
             if (primary == undefined){
-                queryString = 'SELECT * FROM médico';
+                queryString = 'SELECT * FROM medico';
             }
 
             // If the search is more complex
@@ -51,7 +51,7 @@ module.exports = {
                         afterDate = 999;
                     }
                     values = [beforeDate, afterDate];
-                    queryString = "SELECT m.* FROM médico as m, \
+                    queryString = "SELECT m.* FROM medico as m, \
                     EXTRACT(YEAR from age((now()::date), m.data_de_nascimento)) as idade \
                     WHERE idade >= $1 AND idade <= $2; \
                     "
@@ -78,7 +78,7 @@ module.exports = {
                     }
                     else{
                         secondQueryString = `SELECT entidade.* 
-                        FROM médico as m, ${table} as entidade,
+                        FROM medico as m, ${table} as entidade,
                         EXTRACT(YEAR from age((now()::date), m.data_de_nascimento)) as idade
                         WHERE (idade >= $1 AND idade <= $2) AND (entidade.crm = m.crm);
                         `
@@ -101,7 +101,7 @@ module.exports = {
     getMedicoPrimary : async (req, res, next) => {
         try{
             let crm = req.params.crm
-            queryResult =  await dynamicQuery.getByPrimaryKey('médico', crm);
+            queryResult =  await dynamicQuery.getByPrimaryKey('medico', crm);
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
             res.sendStatus(500);
@@ -113,7 +113,7 @@ module.exports = {
     createMedicos : async (req, res, next) => {
         try{
             values = req.body.values
-            queryString = 'INSERT INTO médico VALUES ($1,$2,$3,$4)';n
+            queryString = 'INSERT INTO medico VALUES ($1,$2,$3,$4)';n
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
             res.sendStatus(500);

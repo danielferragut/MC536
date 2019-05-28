@@ -7,7 +7,7 @@
 --     data_de_nascimento VARCHAR(8),
 -- );
 
-CREATE TABLE médico(
+CREATE TABLE medico(
     crm CHAR(2) PRIMARY KEY,
     cpf CHAR(1) NOT NULL,
     nome VARCHAR(100) NOT NULL,

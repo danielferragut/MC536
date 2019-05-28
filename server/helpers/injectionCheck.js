@@ -4,7 +4,7 @@ module.exports = {
             case 'paciente':
                 primaryKey = 'cpf';
                 break;
-            case 'médico':
+            case 'medico':
                 primaryKey = 'crm';
                 break;
             case 'exame':
