@@ -146,7 +146,7 @@ module.exports = {
         try{
             bodyObject = req.body
             values = Object.values(bodyObject);
-            queryString = 'INSERT INTO consulta VALUES ($1,$2,$3,$4,$5,$6)';
+            queryString = 'INSERT INTO consulta VALUES ($1,$2,$3,$4,$5)';
             queryResult = database.query(queryString, values);
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){
@@ -154,7 +154,7 @@ module.exports = {
             throw err
         }
     },
-    
+
     putconsultas : async (req, res, next) => {
         try{
             values = req.body.values

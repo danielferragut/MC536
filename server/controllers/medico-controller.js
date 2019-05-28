@@ -113,7 +113,8 @@ module.exports = {
         try{
             bodyObject = req.body
             values = Object.values(bodyObject);
-            queryString = 'INSERT INTO medico VALUES ($1,$2,$3,$4,$5)';
+            console.log(values);
+            queryString = 'INSERT INTO medico VALUES ($1,$2,$3,$4,$5,$6)';
             queryResult = database.query(queryString, values);
             res.status(200).json(prettyResponse(queryResult.rows));
         }catch(err){

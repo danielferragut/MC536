@@ -49,3 +49,16 @@ CREATE TABLE cirurgia(
     tipo_de_cirurgia VARCHAR(50),
     cpf VARCHAR(14) REFERENCES paciente, 
     crm VARCHAR(6) references medico);
+
+CREATE TABLE exame(
+    protocolo_exame VARCHAR(50) PRIMARY KEY,
+    data_do_exame DATE  NOT NULL,
+    hora_do_exame TIME (4) NOT NULL,
+    resultado VARCHAR (1000),
+    tipo VARCHAR(50) NOT NULL,
+    crm VARCHAR(6),
+    cpf VARCHAR(11),
+    data_da_consulta DATE,
+    protocolo_internacao VARCHAR(50) REFERENCES internacao,
+    protocolo_atendimento VARCHAR(50) REFERENCES pronto_socorro, 
+    FOREIGN KEY  (crm,cpf,data_da_consulta) references consulta);
