@@ -38,7 +38,7 @@ CREATE TABLE internacao(
 
 CREATE TABLE pronto_socorro(
     protocolo_atendimento VARCHAR(50) PRIMARY KEY,
-    data_atendimento DATE NOT NULL,
+    data_do_atendimento DATE NOT NULL,
     tipo_de_socorro VARCHAR(50),
     cpf VARCHAR(11) REFERENCES paciente);
 
