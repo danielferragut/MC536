@@ -29,7 +29,7 @@ CREATE TABLE consulta(
 
 CREATE TABLE internacao(
     protocolo_internacao VARCHAR(50) PRIMARY KEY,
-    data_intercao DATE NOT NULL,
+    data_da_internacao DATE NOT NULL,
     dias_internado INTEGER,
     leito VARCHAR (20) NOT NULL,
     quarto VARCHAR (8) NOT NULL,

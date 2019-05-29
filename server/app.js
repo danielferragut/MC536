@@ -21,6 +21,7 @@ app.use("/medico", require('./routes/medico-route'));
 app.use("/consulta", require('./routes/consulta-route'));
 app.use('/cirurgia', require('./routes/cirurgia-route'));
 app.use('/atendimento', require('./routes/atendimento-route'));
+// app.use('/internacao', require('./routes/internacao-route'));
 
 
 module.exports = app;
