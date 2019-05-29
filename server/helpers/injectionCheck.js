@@ -23,7 +23,6 @@ module.exports = {
                 primaryKey = 'protocolo_internacao';
                 break;                
             default:
-                //TODO : Maybe throw a error?
                 throw err = {
                     errorMessage : "SQL INJECTION ATTEMPT!"
                 }
