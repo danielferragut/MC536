@@ -35,7 +35,6 @@ CREATE TABLE internacao(
     quarto VARCHAR (8) NOT NULL,
     cpf VARCHAR(11) REFERENCES paciente);
 
-
 CREATE TABLE pronto_socorro(
     protocolo_atendimento VARCHAR(50) PRIMARY KEY,
     data_do_atendimento DATE NOT NULL,
