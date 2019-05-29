@@ -22,7 +22,7 @@ module.exports = {
                 case 'cirurgia':
                     primaryKey = 'protocolo_cirurgia';
                     break; 
-                case 'internação':
+                case 'internacao':
                     primaryKey = 'protocolo_internacao';
                     break;
                 default:

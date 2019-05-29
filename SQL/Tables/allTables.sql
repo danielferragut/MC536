@@ -12,7 +12,7 @@ CREATE TABLE paciente (
 CREATE TABLE medico(
     crm VARCHAR(6) PRIMARY KEY,
     cpf VARCHAR (11) NOT NULL,
-    especialização VARCHAR (50) NOT NULL,
+    especializacao VARCHAR (50) NOT NULL,
     nome VARCHAR (100) NOT NULL,
     telefone VARCHAR (20) NOT NULL,
     data_de_nascimento DATE);

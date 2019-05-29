@@ -2,6 +2,8 @@
 //process.env.NODE_ENV = 'test';
 require('./index.test');
 require('./paciente.test');
+require('./consulta.test');
+require('./atendimento.test');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -12,7 +14,7 @@ const server = require('../../../app');
 
 chai.use(chaiHttp);
 
-describe('medico route', () => {
+describe('internacao route', () => {
 
     // before(async () => {
     // });
@@ -21,12 +23,12 @@ describe('medico route', () => {
     // after('Cleaning database', async () => {
     // });
 
-    describe('Get all médicos', () => {
-        it('Should get all medicos and return 200 OK', async () => {
+    describe('Get all internacaos', () => {
+        it('Should get all internacaos and return 200 OK', async () => {
             try {
                 const result = await chai
                     .request(server)
-                    .get("/medico/")
+                    .get("/internacao/");
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;
@@ -38,37 +40,16 @@ describe('medico route', () => {
                 throw(error);
             }
         });
-        it('Should get all medicos with especialização "Cardiologista"', async () => {
+
+        it('Should get all internacaos before 01/01/2020 an after 02/01/2020', async () => {
             try {
                 req = {
-                    primary : 'especializacao',
-                    primaryValue : "Cardiologista"
-                };
+                    beforeDate : '01/01/2020',
+                    afterDate: '02/01/2020'
+                }
                 const result = await chai
                     .request(server)
-                    .get("/medico/")
-                    .query(req);
-                expect(result.status).to.equal(200);
-                expect(result.body).to.have.property('records');
-                records = result.body.records;
-                expect(records).to.have.property('primary');
-                expect(records).to.have.property('secondary');
-                expect(records.primary).to.have.lengthOf.above(0);
-                expect(records.secondary).to.have.lengthOf(0);
-            } catch (error) {
-                throw(error);
-            }
-        });
-        it('Should get all medicos with less than 30 years', async () => {
-            try {
-                req = {
-                    primary : 'data_de_nascimento',
-                    minAge: 20,
-                    maxAge: 30
-                };
-                const result = await chai
-                    .request(server)
-                    .get("/medico/")
+                    .get("/internacao/")
                     .query(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
@@ -82,16 +63,17 @@ describe('medico route', () => {
             }
         });
 
-        it('(Relational Search)Should get all consultas with medicos with MORE than 10 YEARS', async () => {
+
+        it('(Relational Search)Should get all pacientes with internacaos that happened after 01/01/2001', async () => {
             try {
                 req = {
-                    primary : 'data_de_nascimento',
-                    minAge : 10,
-                    secondary : ["consulta"]
+                    primary : 'data_da_internacao',
+                    afterDate : '01/01/2001',
+                    secondary : ["paciente"]
                 };
                 const result = await chai
                     .request(server)
-                    .get("/medico/")
+                    .get("/internacao/")
                     .query(req);
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
@@ -105,33 +87,17 @@ describe('medico route', () => {
             }
         });
 
-        it('SQL Injection attempt, should return 400', async () => {
-            try {
-                req = {
-                    primary : '; DROP TABLE medico;',
-                    primaryValue : '; DROP TABLE medico;',
-                    secondary : ["consulta", "medico"]
-                };
-                const result = await chai
-                    .request(server)
-                    .get("/medico/")
-                    .query(req);
-                expect(result.status).to.equal(500);
-            } catch (error) {
-                throw(error);
-            }
-        });
 
         
     });
     
 
-    describe('Get medico with primary key', () => {
-        it('Should get one medico by its primary key', async () => {
+    describe('Get internacao with primary key', () => {
+        it('Should get one internacao by its primary key', async () => {
             try {
                 const result = await chai
                     .request(server)
-                    .get("/medico/21")
+                    .get("/internacao/1")
                 expect(result.status).to.equal(200);
                 expect(result.body).to.have.property('records');
                 records = result.body.records;

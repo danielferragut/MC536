@@ -5,7 +5,7 @@ const checkTableInjection = require('../helpers/injectionCheck').checkTableInjec
 
 
 module.exports = {
-    getinternacaos : async (req, res, next) => {
+    getInternacaos : async (req, res, next) => {
         try{
             primary = req.query.primary;
             primaryValue = req.query.primaryValue;
@@ -37,7 +37,7 @@ module.exports = {
             else{
                 // Case Columns Y= Value X
                 // Text columns get generic treatment
-                if (primary !== 'data_da_internacao' && primary !== 'hora_da_internacao'){
+                if (primary !== 'data_da_internacao'){
                     queryString = `SELECT * FROM get_internacao_text('${primary}', '${primaryValue}');`;
                 }
                 // Date columns get special treatment
@@ -54,20 +54,6 @@ module.exports = {
                         values = [afterDate, beforeDate];
                         queryString = "SELECT * FROM internacao \
                         WHERE data_da_internacao >= $1 AND data_da_internacao <= $2;"
-                    }
-
-                    else if (primary === 'hora_da_internacao'){
-                        beforeTime = req.query.beforeTime;
-                        afterTime = req.query.afterTime;
-                        if (beforeTime === undefined){
-                            beforeTime = '23:59';
-                        }
-                        if (afterTime === undefined){
-                            afterTime =  '00:00';
-                        }
-                        values = [afterTime, beforeTime];
-                        queryString = "SELECT * FROM internacao \
-                        WHERE hora_da_internacao >= $1 AND hora_da_internacao <= $2;"
                     }
                 }
             }
@@ -86,12 +72,12 @@ module.exports = {
                     //Checks for SQL Injection on table variable, throws error if there is one
                     checkTableInjection(table);
 
-                    if (primary !== 'data_da_internacao' && primary !== 'hora_da_internacao'){
+                    if (primary !== 'data_da_internacao'){
                         secondQueryString = `SELECT ${table}.* 
                         FROM get_internacao_text('${primary}', '${primaryValue}') NATURAL JOIN ${table};`;
                     }
                     else{
-                        if (primary === 'data_da_internacao' || primary === 'hora_da_internacao'){
+                        if (primary === 'data_da_internacao'){
                             secondQueryString = ` SELECT ${table}.* FROM internacao NATURAL JOIN ${table} 
                             WHERE ${primary} >= $1 AND ${primary} <= $2;`
                         }
@@ -117,11 +103,12 @@ module.exports = {
             else{
                 res.sendStatus(500);
             }
+            console.log(queryString, values);
             throw(err);
         }
     },
 
-    getinternacaoPrimary : async (req, res, next) => {
+    getInternacaoPrimary : async (req, res, next) => {
         try{
             let protocolo_da_internacao = req.params.primaryKey
             queryResult =  await dynamicQuery.getByPrimaryKey('internacao', protocolo_da_internacao);
@@ -132,7 +119,7 @@ module.exports = {
         }
     },
 
-    createinternacao : async (req, res, next) => {
+    createInternacao : async (req, res, next) => {
         try{
             bodyObject = req.body
             values = Object.values(bodyObject);
@@ -145,7 +132,7 @@ module.exports = {
         }
     },
 
-    putinternacaos : async (req, res, next) => {
+    putInternacaos : async (req, res, next) => {
         try{
             values = req.body.values
             res.status(200).json(prettyResponse(queryResult.rows));
