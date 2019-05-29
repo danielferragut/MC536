@@ -16,7 +16,7 @@ module.exports = {
                     break; 
                 case 'consulta':
                     break;
-                case 'pronto_socorro':
+                case 'atendimento':
                     primaryKey = 'protocolo_atendimento';
                     break; 
                 case 'cirurgia':

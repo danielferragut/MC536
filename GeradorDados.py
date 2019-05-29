@@ -29,11 +29,11 @@ arq.write("CREATE TABLE consulta(crm VARCHAR(6) REFERENCES medico,cpf VARCHAR(11
 
 arq.write("CREATE TABLE internacao(protocolo_internacao VARCHAR(50) PRIMARY KEY,data_intercao DATE NOT NULL,dias_internado INTEGER,leito VARCHAR (20) NOT NULL,quarto VARCHAR (8) NOT NULL,cpf VARCHAR(11) REFERENCES paciente);\n")
 
-arq.write("CREATE TABLE pronto_socorro(protocolo_atendimento VARCHAR(50) PRIMARY KEY,data_atendimento DATE NOT NULL,tipo_de_socorro VARCHAR(50),cpf VARCHAR(11) REFERENCES paciente);\n")
+arq.write("CREATE TABLE atendimento(protocolo_atendimento VARCHAR(50) PRIMARY KEY,data_atendimento DATE NOT NULL,tipo_de_socorro VARCHAR(50),cpf VARCHAR(11) REFERENCES paciente);\n")
 
 arq.write("CREATE TABLE cirurgia(protocolo_cirurgia VARCHAR(50) PRIMARY KEY, hora_da_cirurgia TIME (4), data_da_cirurgia DATE NOT NULL,tipo_de_cirurgia VARCHAR(50),cpf VARCHAR(14) REFERENCES paciente, crm VARCHAR(6) references medico);\n\n")
 
-arq.write("CREATE TABLE exame(protocolo_exame VARCHAR(50) PRIMARY KEY,data_do_exame DATE  NOT NULL,hora_do_exame TIME (4) NOT NULL,resultado VARCHAR (1000),tipo VARCHAR(50) NOT NULL,crm VARCHAR(6),cpf VARCHAR(11),data_da_consulta DATE,protocolo_internacao VARCHAR(50) REFERENCES internacao, protocolo_atendimento VARCHAR(50) REFERENCES pronto_socorro, FOREIGN KEY  (crm,cpf,data_da_consulta) references consulta);\n")
+arq.write("CREATE TABLE exame(protocolo_exame VARCHAR(50) PRIMARY KEY,data_do_exame DATE  NOT NULL,hora_do_exame TIME (4) NOT NULL,resultado VARCHAR (1000),tipo VARCHAR(50) NOT NULL,crm VARCHAR(6),cpf VARCHAR(11),data_da_consulta DATE,protocolo_internacao VARCHAR(50) REFERENCES internacao, protocolo_atendimento VARCHAR(50) REFERENCES atendimento, FOREIGN KEY  (crm,cpf,data_da_consulta) references consulta);\n")
 
 # Pacientes
 for x in range(1, qtdePacientes + 1):
@@ -116,7 +116,7 @@ for x in range(1, qtdeAtendimentos + 1):
     tipo_de_socorro = random.choice(tipos_socorro)
     cpf = random.choice(cpfsValidos)
     
-    values = 'INSERT INTO pronto_socorro VALUES (' + protocolo_atendimento + ', ' + '\'' + data_atendimento + '\', ' + '\'' + tipo_de_socorro + '\'' + ', ' + cpf + ');\n'
+    values = 'INSERT INTO atendimento VALUES (' + protocolo_atendimento + ', ' + '\'' + data_atendimento + '\', ' + '\'' + tipo_de_socorro + '\'' + ', ' + cpf + ');\n'
     arq.write(values)
 arq.write('\n')
 

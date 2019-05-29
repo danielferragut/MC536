@@ -19,6 +19,8 @@ app.use("/index", require("./routes/index-route"));
 app.use("/paciente", require('./routes/paciente-route'));
 app.use("/medico", require('./routes/medico-route'));
 app.use("/consulta", require('./routes/consulta-route'));
+app.use('/cirurgia', require('./routes/cirurgia-route'));
+app.use('/atendimento', require('./routes/atendimento-route'));
 
 
 module.exports = app;
